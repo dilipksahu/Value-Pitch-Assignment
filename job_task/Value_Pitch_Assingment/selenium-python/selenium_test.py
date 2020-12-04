@@ -38,4 +38,4 @@ with open('html_source_code_inner.html', 'w') as f:
 
 print("--------------Success---------------")
 
-# driver.close()
+driver.close()
