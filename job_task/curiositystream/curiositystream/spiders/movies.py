@@ -32,17 +32,19 @@ class MoviesSpider(scrapy.Spider):
 
     def parse_api(self, response):
         raw_data = response.body
-        info_list = json.loads(raw_data)
-        # print(info_list)
-        # l = []
-        for data in info_list:
-            for cat in data['data']:
-                for sub in cat['subcategories']:
-                    d = {}
-                    d['category'] = cat['name']
-                    d['sub-category'] = sub['name']
-                    d['img_url'] = sub['image_url']
-                    # # l.append(d)
-                    yield d
+        resp = json.loads(raw_data)
+        
+        movies = resp.get('data')
+        for cat in movies:
+            for sub in cat['subcategories']:
+                yield {
+                    'category': cat.get('name'),
+                    'image_label': cat.get('image_label'),
+                    'sub-category': sub.get('name'),
+                    'image_url': sub.get('image_url'),
+                    'header_url': sub.get('header_url'),
+                    'background_url': sub.get('background_url')
+                }
+
         
                     
